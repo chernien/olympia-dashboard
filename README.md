@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛍️ Olympia Client — Storefront
+# 🛍️ StoreOlympia 
 
 ### Boutique e-commerce B2B pour la commande en ligne du catalogue Olympia
 
@@ -288,13 +288,6 @@ Ce storefront fait partie de la solution Olympia :
 [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/votre-compte)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/votre-profil)
 [![Email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:vous@exemple.com)
-
----
-
-## 📄 Licence
-
-Distribué sous licence **MIT**. Voir le fichier [`LICENSE`](LICENSE) pour plus d'informations.
-
 <div align="center">
 
 ⭐️ Si ce projet vous a plu, n'hésitez pas à laisser une étoile !
