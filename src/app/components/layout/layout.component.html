@@ -1,0 +1,206 @@
+<!--<div class="page-header page-header-big text-center" 
+     style="background-image: url('../../../../assets/Boutique.png'); 
+            height: 300px; /* Ajustez cette valeur selon vos besoins */
+            background-size: cover;
+            background-position: center;"> <div class="container">
+    <h1 class="page-title" style="color: white;"><span></span></h1>
+  </div>
+</div>End .page-header -->
+
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/home">Acceuil</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Boutique</li>
+    </ol>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <div *ngIf="loggedIn && userconnectcomm">
+          <label for="sref2" style="font-weight: bold;">Choisir le client :</label>
+          <div class="select-custom">
+            <select id="sref2" class="form-control" [(ngModel)]="selectedClient" (change)="onSelectedClient()">
+              <option *ngFor="let client of clients" value="{{client.clI_ID}}">{{client?.nom?.trim()}}</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="loggedIn && (userconnectcomm || userconnectcontact)">
+          <div class="form-group" *ngIf="loggedIn && (userconnectcomm || userconnectcontact) && !isCommercialContact()">
+
+            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Type de commande :</label>
+            <div class="btn-group" role="group">
+
+ <button type="button"
+        class="btn"
+        [ngClass]="{
+          'btn-primary': commandeType === 'achat',
+          'btn-outline-primary': commandeType !== 'achat',
+          'red-button': isRedAchatButton && commandeType === 'achat'
+        }"
+        (click)="setCommandeType('achat')">
+  Achat
+</button>
+
+    <button *ngIf="canShowVenteButton()" type="button"
+            class="btn"
+            [class.btn-primary]="commandeType === 'vente'"
+            [class.btn-outline-primary]="commandeType !== 'vente'"
+            (click)="setCommandeType('vente')">
+      Vente
+    </button>
+
+  </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="(commandeType === 'vente' && userconnectcontact) || 
+        (commandeType === 'achat' && shouldShowGuestList())">
+    <label for="guestSearch">Rechercher et sélectionner un invité :</label>
+    <input type="text" id="guestSearch" class="form-control mb-2" 
+           [(ngModel)]="guestSearchTerm" 
+           (input)="filterGuests()"
+           placeholder="Rechercher par nom, prénom ou téléphone...">
+    
+    <select id="selectedGuest" class="form-control" [(ngModel)]="selectedGuest" (change)="onGuestChange()">
+        <option value="">-- Sélectionnez un invité --</option>
+        <option *ngFor="let guest of filteredGuests" [ngValue]="guest">
+            {{ guest.nom }} {{ guest.prenom }} - {{ guest.tel }}
+        </option>
+    </select>
+    
+    <small class="text-muted" *ngIf="filteredGuests.length === 0">
+        Aucun invité trouvé pour votre recherche.
+    </small>
+</div>
+        <div *ngIf="loggedIn && userconnect">
+          <label for="sref2" style="font-weight: bold;">Choisir le contact :</label>
+          <div class="select-custom">
+            <select id="sref2" class="form-control" [(ngModel)]="selectedContact" (change)="onSelectedContact()">
+              <option *ngFor="let contact of contacts" value="{{contact.t2_ID}}">{{contact?.nom?.trim()}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toolbox">
+          <div class="toolbox-left">
+            <div class="toolbox-info">
+              Afficher <span>{{products?.length}}</span> Produits
+            </div><!-- End .toolbox-info -->
+          </div><!-- End .toolbox-left -->
+
+          <div class="toolbox-right">
+            <div class="toolbox-sort">
+              <form action="#" method="get" class="search-form">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Recherche</label>
+                  <div class="input-group">
+                    <input type="search" 
+                           class="form-control search-input" 
+                           name="q" 
+                           id="q" 
+                           placeholder="Rechercher un produit..." 
+                           [(ngModel)]="searchText" 
+                           required
+                           aria-label="Rechercher">
+                    <button class="btn btn-search" type="submit" aria-label="Lancer la recherche">
+                      <i class="icon-search"></i>
+                    </button>
+                  </div>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .toolbox-sort -->
+          </div><!-- End .toolbox-right -->
+        </div><!-- End .toolbox -->
+
+        <div class="products mb-3">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let product of selectedProducts | produit : searchText;">
+              <div class="product product-7 text-center card h-100">
+
+        
+                <div class="product-body card-body">
+                  <div class="product-cat text-muted small mb-2">
+                    {{product?.ref}} 
+                  </div>
+                  
+                  <h3 class="product-title h5">
+                    <a *ngIf="userconnect || isLocalStorageSelectedClient() || userconnectcontact" 
+                       [routerLink]="['/home/product', product?.artId]">
+                      {{product?.des}}
+                    </a>
+                  </h3>
+                  
+                  <div class="d-flex justify-content-between align-items-center mt-3" style="gap: 0.5rem;">
+
+                    
+                    <a *ngIf="userconnect || isLocalStorageSelectedClient() || userconnectcontact" 
+                       [routerLink]="['/home/product', product?.artId]" 
+                       class="btn btn-primary btn-sm flex-fill text-center">
+                      Voir détails
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- End .col-lg-9 -->
+
+      <aside class="col-lg-3 order-lg-first">
+        <div class="sidebar sidebar-shop">
+          <div class="widget widget-clean">
+            <label>Filtres:</label>
+            <a href="/shop-4columns" class="sidebar-filter-clear">Actualiser</a>
+          </div><!-- End .widget widget-clean -->
+
+          <div class="widget widget-collapsible">
+            <h3 class="widget-title">
+              <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                Par Categorie
+              </a>
+            </h3><!-- End .widget-title -->
+
+            <div class="collapse show" id="widget-1">
+              <div class="widget-body">
+                <div class="filter-items filter-items-count">
+                  <div class="filter-item" *ngFor="let category of categories; let index=index">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="cat-{{index+1}}" (change)="onCategoryChange(category.fam0001)">
+                      <label class="custom-control-label" for="cat-{{index+1}}">{{category?.lib}}</label>
+                    </div><!-- End .custom-checkbox -->
+                    <span class="item-count">{{category?.count}}</span>
+                  </div><!-- End .filter-item -->
+                </div><!-- End .filter-items -->
+              </div><!-- End .widget-body -->
+            </div><!-- End .collapse -->
+          </div><!-- End .widget -->
+
+          <div class="widget widget-collapsible">
+            <h3 class="widget-title">
+              <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
+                Par Collection
+              </a>
+            </h3><!-- End .widget-title -->
+
+            <div class="collapse show" id="widget-4">
+              <div class="widget-body">
+                <div class="filter-items filter-items-count">
+                  <div class="filter-item" *ngFor="let collection of collections; let index=index">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="brand-{{index}}" (change)="onCollectionChange(collection?.collection)">
+                      <label class="custom-control-label" for="brand-{{index}}">{{collection?.collection}}</label>
+                    </div><!-- End .custom-checkbox -->
+                    <span class="item-count">{{collection?.count}}</span>
+                  </div><!-- End .filter-item -->
+                </div><!-- End .filter-items -->
+              </div><!-- End .widget-body -->
+            </div><!-- End .collapse -->
+          </div><!-- End .widget -->
+        </div><!-- End .sidebar sidebar-shop -->
+      </aside><!-- End .col-lg-3 -->
+    </div><!-- End .row -->
+  </div><!-- End .container -->
+</div><!-- End .page-content -->

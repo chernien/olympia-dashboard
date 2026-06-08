@@ -1,0 +1,195 @@
+<div class="page-header page-header-big text-center" style="background-image: url('../../../../assets/olym.jpg')">
+  <div class="container">
+    <h1 class="page-title" style="color: white;">Olympia<span>La Pintura Italiana</span></h1>
+  </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/home">Acceuil</a></li>
+      <li class="breadcrumb-item active"><a href="#">Boutique</a></li>
+    </ol>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <div *ngIf="loggedIn && userconnectcomm">
+          <label for="sref2" style="font-weight: bold;">Choisir le client :</label>
+          <div class="select-custom">
+            <select id="sref2" class="form-control" [(ngModel)]="selectedClient" (change)="onSelectedClient()">
+              <option *ngFor="let client of clients" value="{{client.clI_ID}}">{{client?.nom?.trim()}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbox">
+          <div class="toolbox-left">
+            <div class="toolbox-info">
+              Afficher <span>{{products?.length}}</span> Produits
+            </div><!-- End .toolbox-info -->
+          </div><!-- End .toolbox-left -->
+
+          <div class="toolbox-right">
+            <div class="toolbox-sort">
+              <form action="#" method="get">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Recherche</label>
+                  <input type="search" class="form-control" name="q" id="q" placeholder="Rechercher"
+                    [(ngModel)]="searchText" required>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .toolbox-sort -->
+            <div class="toolbox-layout">
+              <a routerLink="/home/shop-list" class="btn-layout">
+                <svg width="16" height="10">
+                  <rect x="0" y="0" width="4" height="4" />
+                  <rect x="6" y="0" width="10" height="4" />
+                  <rect x="0" y="6" width="4" height="4" />
+                  <rect x="6" y="6" width="10" height="4" />
+                </svg>
+              </a>
+
+              <a routerLink="/home/shop-2columns" class="btn-layout">
+                <svg width="10" height="10">
+                  <rect x="0" y="0" width="4" height="4" />
+                  <rect x="6" y="0" width="4" height="4" />
+                  <rect x="0" y="6" width="4" height="4" />
+                  <rect x="6" y="6" width="4" height="4" />
+                </svg>
+              </a>
+
+              <a routerLink="/home/shop-3columns" class="btn-layout active">
+                <svg width="16" height="10">
+                  <rect x="0" y="0" width="4" height="4" />
+                  <rect x="6" y="0" width="4" height="4" />
+                  <rect x="12" y="0" width="4" height="4" />
+                  <rect x="0" y="6" width="4" height="4" />
+                  <rect x="6" y="6" width="4" height="4" />
+                  <rect x="12" y="6" width="4" height="4" />
+                </svg>
+              </a>
+
+              <a routerLink="/home/shop-4columns" class="btn-layout">
+                <svg width="22" height="10">
+                  <rect x="0" y="0" width="4" height="4" />
+                  <rect x="6" y="0" width="4" height="4" />
+                  <rect x="12" y="0" width="4" height="4" />
+                  <rect x="18" y="0" width="4" height="4" />
+                  <rect x="0" y="6" width="4" height="4" />
+                  <rect x="6" y="6" width="4" height="4" />
+                  <rect x="12" y="6" width="4" height="4" />
+                  <rect x="18" y="6" width="4" height="4" />
+                </svg>
+              </a>
+            </div><!-- End .toolbox-layout -->
+          </div><!-- End .toolbox-right -->
+        </div><!-- End .toolbox -->
+
+        <div class="products mb-3">
+          <div class="row justify-content-center">
+            <div class="col-6 col-md-4 col-lg-4" *ngFor="let product of selectedProducts | produit:searchText">
+              <div class="product product-7 text-center">
+                <figure class="product-media">
+                  <!-- <span class="product-label label-new"></span> -->
+                  <a *ngIf="userconnect || isLocalStorageSelectedClient()" routerLink="/home/product/{{product?.artId}}">
+                    <img src="https://localhost:7166/api/Art/image?artPhotoId={{product?.artId}}" alt="Product image"
+                      class="product-image">
+                  </a>
+
+                  <div class="product-action-vertical">
+                    <a (click)="addToWishlist(product); openSnackBarWishlist()" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+
+                  </div><!-- End .product-action-vertical -->
+
+                  <div class="product-action">
+                    <a *ngIf="userconnect || isLocalStorageSelectedClient()" routerLink="/home/product/{{product?.artId}}" class="btn-product btn-cart"><span>Détails Produit</span></a>
+                  </div><!-- End .product-action -->
+                </figure><!-- End .product-media -->
+
+                <div class="product-body">
+                  <div class="product-cat">
+                    <a href="#">{{product?.artcategorie}}</a>
+                  </div><!-- End .product-cat -->
+                  <h3 class="product-title"><a *ngIf="userconnect || isLocalStorageSelectedClient()" [routerLink]="['/home/product', product?.artid]">{{product?.des}}</a></h3>
+                  <!-- End .product-title -->
+                  <div class="product-content">
+                    <p>{{product?.fam001}}</p>
+                  </div><!-- End .product-content -->
+                  <!-- End .product-price -->
+                  <div class="ratings-container">
+                    <div class="ratings">
+                      <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                    </div><!-- End .ratings -->
+                  </div><!-- End .rating-container -->
+                </div><!-- End .product-body -->
+              </div><!-- End .product -->
+            </div><!-- End .col-sm-6 col-lg-4 -->
+            <!-- End .col-sm-6 col-lg-4 -->
+
+          </div><!-- End .row -->
+        </div><!-- End .products -->
+
+      </div><!-- End .col-lg-9 -->
+      <aside class="col-lg-3 order-lg-first">
+        <div class="sidebar sidebar-shop">
+          <div class="widget widget-clean">
+            <label>Filters:</label>
+            <a href="/shop-3columns" class="sidebar-filter-clear">Actualiser</a>
+          </div><!-- End .widget widget-clean -->
+
+          <div class="widget widget-collapsible">
+            <h3 class="widget-title">
+              <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                Category
+              </a>
+            </h3><!-- End .widget-title -->
+
+            <div class="collapse show" id="widget-1">
+              <div class="widget-body">
+                <div class="filter-items filter-items-count">
+                  <div class="filter-item" *ngFor="let category of categories;let index=index">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="cat-{{index+1}}"
+                        (change)="onCategoryChange(category.fam0001)">
+                      <label class="custom-control-label" for="cat-{{index+1}}">{{category?.lib}}</label>
+                    </div><!-- End .custom-checkbox -->
+                    <span class="item-count">{{category?.count}}</span>
+                  </div><!-- End .filter-item -->
+                </div><!-- End .filter-items -->
+              </div><!-- End .widget-body -->
+            </div><!-- End .collapse -->
+          </div><!-- End .widget -->
+
+          <div class="widget widget-collapsible">
+            <h3 class="widget-title">
+              <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
+               Par Collection
+              </a>
+            </h3><!-- End .widget-title -->
+
+            <div class="collapse show" id="widget-4">
+              <div class="widget-body">
+                <div class="filter-items filter-items-count">
+                  <div class="filter-item" *ngFor="let collection of collections; let index=index">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="brand-{{index}}"
+                        (change)="onCollectionChange(collection?.collection)">
+                      <label class="custom-control-label" for="brand-{{index}}">{{collection?.collection}}</label>
+                    </div><!-- End .custom-checkbox -->
+                    <span class="item-count">{{collection?.count}}</span>
+
+                  </div><!-- End .filter-item -->
+
+                </div><!-- End .filter-items -->
+              </div><!-- End .widget-body -->
+            </div><!-- End .collapse -->
+          </div><!-- End .widget -->
+
+          <!-- End .widget -->
+        </div><!-- End .sidebar sidebar-shop -->
+      </aside><!-- End .col-lg-3 -->
+    </div><!-- End .row -->
+  </div><!-- End .container -->
+</div><!-- End .page-content -->

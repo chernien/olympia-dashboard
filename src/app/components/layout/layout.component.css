@@ -1,0 +1,191 @@
+.category-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  }
+
+  .category-button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  }
+
+  .category-button:hover {
+  background-color: #0056b3;
+  }
+
+  .category-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+  }
+  .custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+}
+
+.custom-alert.show {
+    display: block;
+}
+.product {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product:hover {
+  transform: translateY(-5px); /* Légère élévation lors du hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+}
+
+/* Couleur de fond marron au hover */
+.product:hover .product-body {
+  background-color: rgba(139, 69, 19, 0.7); /* Marron clair avec transparence */
+  color: white; /* Texte blanc pour contraste */
+  transition: background-color 0.3s ease; /* Transition douce */
+}
+
+/* Changement de couleur des liens au survol */
+.product:hover a {
+  color: #fff; /* Texte blanc pour les liens */
+}
+
+/* Modifier la couleur du bouton au hover */
+.product:hover .btn-product {
+  background-color: #8B4513; /* Marron */
+  color: white; /* Texte blanc */
+  border: none; /* Supprime le contour */
+}
+
+button.red-button {
+  background-color: red !important;
+  border-color: red !important;
+  color: white !important;
+}
+
+button.red-button:hover {
+  background-color: darkred !important;
+  border-color: darkred !important;
+}
+
+
+.product {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  background-color: #f8f9fa;
+  padding: 15px;
+}
+
+.product-title a {
+  color: #333;
+  text-decoration: none;
+}
+
+.product-title a:hover {
+  color: #0d6efd;
+}
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  color: white;
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: #f8f9fa;
+}
+.search-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.header-search-wrapper {
+  position: relative;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.input-group:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.search-input {
+  flex: 1;
+  padding: 22px 20px;
+  background: #fdf1d8;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  height: 45px;
+}
+
+.btn-search {
+  background: #e7b160;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 0 20px;
+  height: 45px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-search:hover {
+  background: #b97003;
+}
+
+.icon-search {
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-form {
+    max-width: 100%;
+  }
+  
+  .search-input {
+    padding: 10px 15px;
+  }
+}

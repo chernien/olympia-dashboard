@@ -1,0 +1,100 @@
+<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+  <div class="container">
+    <h2 class="page-title" align="center">Bienvenue chez <span>Leonardo</span> </h2>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+  style="background-image: url('assets/img9-scaled.jpg')">
+
+  <div class="container">
+    <div class="form-box">
+      <div class="form-tab">
+        <ul class="nav nav-pills nav-fill" role="tablist">
+          <!--<li class="nav-item">
+            <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"
+              aria-controls="signin" aria-selected="true">Client</a>
+          </li>-->
+          <li class="nav-item">
+            <a class="nav-link " id="signin-tab" data-toggle="tab" href="#signinT2" role="tab"
+              aria-controls="signinT2" aria-selected="true">Authentification :</a>
+          </li>
+        </ul>
+
+
+        <div class="tab-content" id="tab-content-5">
+          
+          <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginContact()">
+              <div class="form-group">
+                <label for="singin-email">Email:</label>
+                <input type="text" class="form-control" formControlName="username" id="singin-email"
+                  name="singin-email" required>
+              </div><!-- End .form-group -->
+
+              <div class="form-group">
+                <label for="singin-password">Mot de passse :</label>
+                <input type="password" class="form-control" formControlName="password" id="singin-password"
+                  name="singin-password" required>
+              </div><!-- End .form-group -->
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-outline-primary-2">
+                  <span>Se connecter</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div><!-- End .form-footer -->
+            </form>
+
+          </div><!-- .End .tab-pane -->
+          <!--<div class="tab-pane fade" id="signin2" role="tabpanel" aria-labelledby="signin-tab">
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginComm()">
+              <div class="form-group">
+                <label for="singin-email2">Email Commercial:</label>
+                <input type="text" class="form-control" formControlName="username" id="singin-email2"
+                  name="singin-email2" required>
+              </div>
+
+              <div class="form-group">
+                <label for="singin-password2">Mot de passse :</label>
+                <input type="password" class="form-control" formControlName="password" id="singin-password2"
+                  name="singin-password2" required>
+              </div>
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-outline-primary-2">
+                  <span>Se connecter</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div>
+            </form>
+
+          </div>-->
+         <div class="tab-pane fade" id="signinT2" role="tabpanel" aria-labelledby="signin-tab">
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginContact()">
+              <div class="form-group">
+                <label for="singin-emailT2">Email Contact:</label>
+                <input type="text" class="form-control" formControlName="username" id="singin-emailT2"
+                  name="singin-emailT2" required>
+              </div>
+
+              <div class="form-group">
+                <label for="singin-passwordT2">Mot de passse :</label>
+                <input type="password" class="form-control" formControlName="password" id="singin-passwordT2"
+                  name="singin-passwordT2" required>
+              </div>
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-outline-primary-2">
+                  <span>Se connecter</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div><!-- End .tab-content -->
+      </div><!-- End .form-tab -->
+    </div><!-- End .form-box -->
+  </div><!-- End .container -->
+</div><!-- End .login-page section-bg -->

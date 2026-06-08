@@ -1,0 +1,29 @@
+.product {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product:hover {
+    transform: translateY(-5px); /* Légère élévation lors du hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+}
+
+/* Couleur de fond marron au hover */
+.product:hover .product-body {
+    background-color: rgba(139, 69, 19, 0.7); /* Marron clair avec transparence */
+    color: white; /* Texte blanc pour contraste */
+    transition: background-color 0.3s ease; /* Transition douce */
+}
+
+/* Changement de couleur des liens au survol */
+.product:hover a {
+    color: #fff; /* Texte blanc pour les liens */
+}
+
+/* Modifier la couleur du bouton au hover */
+.product:hover .btn-product {
+    background-color: #8B4513; /* Marron */
+    color: white; /* Texte blanc */
+    border: none; /* Supprime le contour */
+}

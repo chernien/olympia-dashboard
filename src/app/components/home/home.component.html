@@ -1,0 +1,262 @@
+<div class="page-wrapper">
+  <app-header></app-header>
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main><!-- End .main -->
+
+  <app-footer></app-footer> <!-- End .footer -->
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+<div class="mobile-menu-container">
+  <div class="mobile-menu-wrapper">
+    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+    <form action="#" method="get" class="mobile-search">
+      <label for="mobile-search" class="sr-only">Recherche</label>
+      <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder=""
+        required>
+      <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+    </form>
+
+    <nav class="mobile-nav">
+      <ul class="mobile-menu">
+
+        <li class="megamenu-container active">
+          <a href="/home" class="sf">Boutique</a>
+
+        </li>
+       <li *ngIf="!isCommercialContact()">
+  <a routerLink="/home/account" class="sf">Compte</a>
+</li>
+        <li>
+          <a class="sf" routerLink="/home/guest">Clients</a>
+
+          <!-- End .megamenu megamenu-sm -->
+        </li>
+
+
+      </ul>
+    </nav><!-- End .mobile-nav -->
+
+    <div class="social-icons">
+      <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+      <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+      <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+      <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+    </div><!-- End .social-icons -->
+  </div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
+
+<!-- Sign in / Register Modal -->
+<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+
+        <div class="form-box">
+          <div class="form-tab">
+            <ul class="nav nav-pills nav-fill" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"
+                  aria-controls="signin" aria-selected="true">Connexion</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                  aria-controls="register" aria-selected="false">Inscription</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="tab-content-5">
+              <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                  <div class="form-group">
+                    <label for="singin-email">Email :</label>
+                    <input type="text" class="form-control" formControlName="email" id="singin-email"
+                      name="singin-email" required>
+                  </div><!-- End .form-group -->
+
+                  <div class="form-group">
+                    <label for="singin-password">Mot de passse :</label>
+                    <input type="password" class="form-control" formControlName="password" id="singin-password"
+                      name="singin-password" required>
+
+                  </div><!-- End .form-group -->
+
+                  <div class="form-footer">
+                    <button type="submit" class="btn btn-outline-primary-2">
+                      <span>Se connecter</span>
+                      <i class="icon-long-arrow-right"></i>
+                    </button>
+
+
+
+                    <a href="#" class="forgot-link">Mot de passe oublier ?</a>
+                  </div><!-- End .form-footer -->
+                </form>
+                <div class="form-choice">
+                  <p class="text-center">or sign in with</p>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <a href="#" class="btn btn-login btn-g">
+                        <i class="icon-google"></i>
+                        Login With Google
+                      </a>
+                    </div><!-- End .col-6 -->
+                    <div class="col-sm-6">
+                      <a href="#" class="btn btn-login btn-f">
+                        <i class="icon-facebook-f"></i>
+                        Login With Facebook
+                      </a>
+                    </div><!-- End .col-6 -->
+                  </div><!-- End .row -->
+                </div><!-- End .form-choice -->
+              </div><!-- .End .tab-pane -->
+              <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                <form [formGroup]="formClient" (ngSubmit)="saveClient()">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>Prénom *</label>
+                      <input type="text" class="form-control" formControlName="firstName" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div
+                        *ngIf="formClient.get('firstName')?.errors?.['required'] && formClient.get('firstName')?.touched"
+                        class="text-danger">
+                        Le prénom est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                      <label>Nom *</label>
+                      <input type="text" class="form-control" formControlName="lastName" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div
+                        *ngIf="formClient.get('lastName')?.errors?.['required'] && formClient.get('lastName')?.touched"
+                        class="text-danger">
+                        Le nom est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+                  </div><!-- End .row -->
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>Numéro du téléphone *</label>
+                      <input type="text" class="form-control" formControlName="phone" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div *ngIf="formClient.get('phone')?.errors?.['required'] && formClient.get('phone')?.touched"
+                        class="text-danger">
+                        Le numéro du téléphone est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                      <label>Pays *</label>
+                      <input type="text" class="form-control" formControlName="country" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div *ngIf="formClient.get('country')?.errors?.['required'] && formClient.get('country')?.touched"
+                        class="text-danger">
+                        Le pays est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+                  </div><!-- End .row -->
+                  <div class="form-group">
+                    <label>Société *</label>
+                    <input type="text" class="form-control" formControlName="companyName" required>
+                    <!-- Afficher les messages d'erreur si le champ est invalide -->
+                    <div
+                      *ngIf="formClient.get('companyName')?.errors?.['required'] && formClient.get('companyName')?.touched"
+                      class="text-danger">
+                      Le nom de la société est requis.
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>Ville *</label>
+                      <input type="text" class="form-control" formControlName="townCity" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div
+                        *ngIf="formClient.get('townCity')?.errors?.['required'] && formClient.get('townCity')?.touched"
+                        class="text-danger">
+                        Le nom de la ville est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+                    <div class="col-sm-6">
+                      <label>Code Postal *</label>
+                      <input type="text" class="form-control" formControlName="postcode" required>
+                      <!-- Afficher les messages d'erreur si le champ est invalide -->
+                      <div
+                        *ngIf="formClient.get('postcode')?.errors?.['required'] && formClient.get('postcode')?.touched"
+                        class="text-danger">
+                        Le code postal est requis.
+                      </div>
+                    </div><!-- End .col-sm-6 -->
+                  </div>
+
+                  <div class="form-group">
+                    <label>Adresse compléte *</label>
+                    <input type="text" class="form-control" formControlName="streetAddress" required>
+                    <!-- Afficher les messages d'erreur si le champ est invalide -->
+                    <div
+                      *ngIf="formClient.get('streetAddress')?.errors?.['required'] && formClient.get('streetAddress')?.touched"
+                      class="text-danger">
+                      L'adresse est requise.
+                    </div>
+                  </div><!-- End .form-group -->
+
+                  <!-- Ajoutez les autres champs du formulaire ici avec les validations nécessaires -->
+                  <div class="form-group">
+                    <label>Adresse Email *</label>
+                    <input type="email" class="form-control" formControlName="email" required>
+                    <!-- Display error messages if the field is invalid -->
+                    <div *ngIf="formClient.get('email')?.errors?.['required'] && formClient.get('email')?.touched"
+                      class="text-danger">
+                      L'email est requis.
+                    </div>
+                    <div *ngIf="formClient.get('email')?.errors?.['email'] && formClient.get('email')?.touched"
+                      class="text-danger">
+                      Format d'email invalide.
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Mot de passe *</label>
+                    <input type="password" class="form-control" formControlName="password" required>
+                    <!-- Display error messages if the field is invalid -->
+                    <div *ngIf="formClient.get('password')?.errors?.['required'] && formClient.get('password')?.touched"
+                      class="text-danger">
+                      Le mot de passe est requis.
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Confirme Mot de passe *</label>
+                    <input type="password" class="form-control" formControlName="confirmPassword" required>
+                    <!-- Display error messages if the field is invalid -->
+                    <div
+                      *ngIf="formClient.get('confirmPassword')?.errors?.['required'] && formClient.get('confirmPassword')?.touched"
+                      class="text-danger">
+                      Les mots de passe ne correspondent pas.
+                    </div>
+
+                  </div>
+                  <button type="submit" class="btn btn-outline-primary-2">
+                    <span>Enregistrer</span>
+                    <i class="icon-long-arrow-right"></i>
+                  </button>
+                </form>
+                <!-- End .form-choice -->
+              </div><!-- .End .tab-pane -->
+            </div><!-- End .tab-content -->
+          </div><!-- End .form-tab -->
+        </div><!-- End .form-box -->
+      </div><!-- End .modal-body -->
+    </div><!-- End .modal-content -->
+  </div><!-- End .modal-dialog -->
+</div><!-- End .modal -->

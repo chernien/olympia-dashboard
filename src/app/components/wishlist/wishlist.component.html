@@ -1,0 +1,57 @@
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="container">
+    <h1 class="page-title">Liste Des Envies<span>Shop</span></h1>
+  </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/shop-list">Shop</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+    </ol>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+  <div class="container">
+    <table class="table table-wishlist table-mobile">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of wishlistItems">
+          <td class="product-col">
+            <div class="product">
+              <figure class="product-media">
+                <a routerLink="/home/product/{{product?.artId}}">
+                  <img src="https://localhost:7166/api/Art/image?artPhotoId={{product?.artId}}" alt="Product image"
+                    class="product-image">
+                </a>
+              </figure>
+
+              <h3 class="product-title">
+                <a [routerLink]="['/home/product', product?.artId]">{{product?.des}}</a>
+              </h3><!-- End .product-title -->
+            </div><!-- End .product -->
+          </td>
+          <td class="price-col">{{product?.prix | number: '1.2-2' }} {{product?.devise}}</td>
+
+          <td class="action-col">
+            <button class="btn btn-block btn-outline-primary-2"
+                (click)=" openSnackBarCart()"><i class="icon-cart-plus"></i>Ajouter au panier</button>
+            <button class="btn btn-block btn-outline-primary-2 disabled"
+                *ngIf="product.stock < 1">En rupture de stock</button>
+        </td>
+          <td class="remove-col"><button class="btn-remove" (click)="removeFromWishlist(product); openSnackBarRemoveWishlist()" ><i class="icon-close"></i></button></td>
+        </tr>
+
+      </tbody>
+
+    </table><!-- End .table table-wishlist -->
+  </div><!-- End .container -->
+</div><!-- End .page-content -->

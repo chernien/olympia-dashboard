@@ -1,0 +1,74 @@
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="container">
+    <h1 class="page-title">Finalisation de la commande<span>Olympia</span></h1>
+  </div><!-- End .container -->
+</div><!-- End .page-header -->
+<br>
+<div class="page-content">
+  <div class="checkout">
+    <div class="container">
+      <div class="checkout-discount">
+        <!-- <form action="#">
+          <input type="text" class="form-control" required id="checkout-discount-input">
+          <label for="checkout-discount-input" class="text-truncate">Avez-vous un coupon ? <span>Cliquez ici pour entrer
+              votre
+              code</span></label>
+        </form> -->
+      </div><!-- End .checkout-discount -->
+      <form [formGroup]="formClient">
+        <div class="row" style="justify-content: center;">
+
+          <aside class="col-lg-6">
+            <div class="summary">
+              <h3 class="summary-title" *ngIf="userconnectcomm">Votre commande Pour "{{this.client?.nom.trim()}}""
+              </h3>
+              <h3 class="summary-title" *ngIf="userconnect">Votre commande
+              </h3>
+              <!-- End .summary-title -->
+              <p *ngIf="userconnect"><span>Client : </span> {{this.userconnect?.nom.trim()}}</p>
+              <!-- End .summary-title -->
+
+              <p *ngIf="userconnectcomm"><span>Commercial : </span> {{this.userconnectcomm?.nom.trim()}}</p>
+              <!-- End .summary-title -->
+
+              <table class="table table-summary">
+                <thead>
+                  <tr>
+                    <th>Article</th>
+                    <th>Total TTC</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let product of cartItems">
+                    <td><a href="#">{{product?.quantite}} X {{product?.des}}</a></td>
+                    <td>{{product?.prix * product?.quantite | number: '1.3-3'}} DT</td>
+                  </tr>
+                  <tr class="summary-total">
+                    <td>Total TTC Commande:</td>
+                    <td>{{cartTotal | number: '1.3-3'}} DT</td>
+                  </tr><!-- End .summary-total -->
+                </tbody>
+              </table><!-- End .table table-summary -->
+
+
+
+              <button *ngIf="connectedRole=='Commercial'" type="submit" (click)="passerCommande()"
+                class="btn btn-outline-primary-2 btn-order btn-block">
+                <span class="btn-text">Passer la commande
+                </span>
+                <span class="btn-hover-text">Checkout</span>
+              </button>
+              <button *ngIf="connectedRole=='Client'" type="submit" (click)="passerCommandeClient()"
+                class="btn btn-outline-primary-2 btn-order btn-block">
+                <span class="btn-text">Passer la commande
+                </span>
+                <span class="btn-hover-text">Checkout</span>
+              </button>
+            </div><!-- End .summary -->
+          </aside><!-- End .col-lg-3 -->
+        </div><!-- End .row -->
+      </form>
+    </div><!-- End .container -->
+  </div><!-- End .checkout -->
+</div><!-- End .page-content -->

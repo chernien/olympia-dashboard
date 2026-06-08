@@ -1,0 +1,502 @@
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="container">
+    <h1 class="page-title">Mon compte<span>{{userconnect?.nom.trim()}}</span></h1>
+  </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/home">Acceuil</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Mon compte</li>
+    </ol>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+  <div class="dashboard">
+    <div class="container">
+      <div class="row">
+        <aside class="col-md-3 col-lg-2">
+          <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab"
+                aria-controls="tab-dashboard" aria-selected="true">Tableau de bord</a>
+            </li>
+
+            <li class="nav-item" *ngIf="userconnectcomm">
+              <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-clients" role="tab"
+                aria-controls="tab-orders" aria-selected="false">Mes Clients</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab"
+                aria-controls="tab-address" aria-selected="false">Mes Adresses</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
+                aria-controls="tab-orders" aria-selected="false">Mes Commandes</a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="logout()">Se déconnecter</a>
+            </li>
+          </ul>
+        </aside><!-- End .col-lg-3 -->
+
+        <div class="col-md-8 col-lg-9">
+          <div class="tab-content">
+            <div class="tab-pane fade" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link"
+              *ngIf="role=='Client'">
+              <p>Salut, Cher Client <span class="font-weight-normal text-dark"> {{userconnect?.nom?.trim()}}
+                </span>
+                <br>
+                Depuis votre tableau de bord de compte, vous pouvez consulter vos <a href="#tab-orders"
+                  data-toggle="tab" class="tab-trigger-link link-underline">dernières commandes</a>, gérer vos <a
+                  href="#tab-address" data-toggle="tab" class="tab-trigger-link">adresses de livraison et de
+                  facturation</a>, et <a href="#tab-account" data-toggle="tab" class="tab-trigger-link">Modifier votre
+                  mot de passe et les détails de votre compte</a>.
+              </p>
+            </div><!-- .End .tab-pane -->
+            <div class="tab-pane fade" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link"
+              *ngIf="role=='Commercial'">
+              <p>Salut, Cher Commercial <span class="font-weight-normal text-dark"> {{userconnectcomm?.nom?.trim()}}
+                </span>
+                <br>
+                Depuis votre tableau de bord de compte, vous pouvez consulter vos <a href="#tab-orders"
+                  data-toggle="tab" class="tab-trigger-link link-underline">dernières commandes</a>, gérer vos <a
+                  href="#tab-address" data-toggle="tab" class="tab-trigger-link">adresses de livraison et de
+                  facturation</a>, et <a href="#tab-account" data-toggle="tab" class="tab-trigger-link">Modifier votre
+                  mot de passe et les détails de votre compte</a>.
+              </p>
+            </div>
+            <div *ngIf="userconnectcomm" class="tab-pane fade" id="tab-clients" role="tabpanel"
+              aria-labelledby="tab-orders-link">
+              <table class="table table-cart table-mobile table-hover">
+                <thead>
+                  <tr>
+                    <th>Numero</th>
+                    <th>Client</th>
+                    <th>Adresse</th>
+                    <th>Téléphone</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let commande of clients?.reverse()?.slice() ; let index=index">
+                    <td># {{index}}</td>
+                    <td>{{commande?.nom.trim() }}</td>
+                    <td>{{commande?.rue.trim()}} </td>
+                    <td> {{commande.tel.trim()}} </td>
+                    <td class="total-col"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p *ngIf="commandes?.length==0">Aucune commande n'a encore été passée.
+              </p>
+              <a href="https://olympiaclub.olympiacompany.com" class="btn btn-outline-primary-2"><span>Allez à la boutique</span><i
+                  class="icon-long-arrow-right"></i></a>
+            </div>
+            <div *ngIf="userconnectcomm" class="tab-pane fade show active" id="tab-orders" role="tabpanel"
+              aria-labelledby="tab-orders-link">
+              <table class="table table-cart table-mobile table-hover">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+
+                    <th>Date de commande</th>
+                    <th>Status</th>
+                    <th>Produits</th>
+                    <th>Total</th>
+                    <th>Type</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let commande of commandesComm?.$values?.reverse()?.slice() ; let index=index">
+                    <td>{{commande.Client?.NOM.trim()}}</td>
+                    <td>{{commande?.OrderDate | date:'medium'}}</td>
+                    <td>
+                      <div class="badge badge-warning" style="padding: 10px;border-radius: 0px;">{{commande?.Status}}
+                      </div>
+                    </td>
+                    <td><a href="#signin-modal" (click)="getAllProductsCommande(commande?.Commande_Id)"
+                        data-toggle="modal">Liste des Produits</a></td>
+                    <td class="total-col">{{commande?.Total| number: '1.3-3'}} DT</td>
+                    <td>{{commande.Client?.Type}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p *ngIf="commandes?.length==0">Aucune commande n'a encore été passée.
+              </p>
+              <a href="/shop-list" class="btn btn-outline-primary-2"><span>Allez à la boutique</span><i
+                  class="icon-long-arrow-right"></i></a>
+            </div><!-- .End .tab-pane -->
+            <div *ngIf="userconnect" class="tab-pane fade show active" id="tab-orders" role="tabpanel"
+            aria-labelledby="tab-orders-link">
+            <table class="table table-cart table-mobile table-hover">
+              <thead>
+                <tr>
+                  <th>Numero</th>
+                  <th>Contact</th>
+                  <th>Date de commande</th>
+                  <th>Status</th>
+                  <th>Produits</th>
+                  <th>Total</th>
+                  <th>Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+          
+              <tbody>
+                <tr *ngFor="let commande of commandes?.$values.reverse(); let index = index">
+                  <td># {{ index + 1 }}</td>
+                  
+                  <td>{{ commande?.ContactId }}</td>
+                  <td>{{ commande?.OrderDate | date: 'medium' }}</td>
+                  <td>
+                    <div class="badge badge-warning" style="padding: 10px; border-radius: 0px;">
+                      {{ commande?.Status }}
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#signin-modal" (click)="getAllProductsCommande(commande?.Commande_Id)" data-toggle="modal">
+                      Liste des Produits
+                    </a>
+                  </td>
+                  <td class="total-col">{{ commande?.Total | number: '1.3-3' }} DT</td>
+                  <td>{{ commande?.Type }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p *ngIf="commandes?.$values?.length == 0">Aucune commande n'a encore été passée.</p>
+            <a href="/home" class="btn btn-outline-primary-2">
+              <span>Allez à la boutique</span>
+              <i class="icon-long-arrow-right"></i>
+            </a>
+          </div>
+<div class="filters-section">
+  <div class="filters-header">
+    <h3 class="filters-title">Filtres </h3>
+  </div>
+
+  <div class="filters-grid">
+    <div class="filter-group">
+      <label class="filter-label">Type d'opération</label>
+      <div class="segmented-control">
+        <button class="segment" 
+                [class.active]="!filterType"
+                (click)="filterType = null">
+          Tous
+        </button>
+        <button class="segment" 
+                [class.active]="filterType === 1"
+                (click)="filterType = 1">
+          Achat
+        </button>
+        <button class="segment" 
+                [class.active]="filterType === 2"
+                (click)="filterType = 2">
+          Vente
+        </button>
+      </div>
+    </div>
+<div class="filter-group">
+  <label class="filter-label">Statut</label>
+  <div class="segmented-control">
+    <button class="segment"
+            [class.active]="!filterStatus"
+            (click)="filterStatus = null">
+      Tous
+    </button>
+    <button class="segment"
+            [class.active]="filterStatus === 'encour'"
+            (click)="filterStatus = 'encour'">
+      En attente
+    </button>
+    <button class="segment"
+            [class.active]="filterStatus === 'livrée'"
+            (click)="filterStatus = 'livrée'">
+      Confirmée
+    </button>
+    <button class="segment"
+            [class.active]="filterStatus === 'livrée ( partielle)'"
+            (click)="filterStatus = 'livrée ( partielle)'">
+      Annulée
+    </button>
+  </div>
+</div>
+
+    <div class="filter-group">
+      <label for="guestFilter" class="filter-label">Recherche client</label>
+      <div class="search-input">
+        <input id="guestFilter" 
+               type="text" 
+               [(ngModel)]="filterGuestName" 
+               placeholder="Saisissez un nom...">
+        <button class="clear-btn" 
+                *ngIf="filterGuestName" 
+                (click)="filterGuestName = ''">
+          &times;
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+          
+<div *ngIf="userconnectcontact" class="tab-pane fade show active" id="tab-orders" role="tabpanel"
+     aria-labelledby="tab-orders-link">
+<div class="table-wrapper">
+  <table class="table table-cart table-mobile table-hover">
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">Commande</th>
+        <th class="text-center">Client</th>
+        <th class="text-center">Date commande</th>
+        <th class="text-center">Statut</th>
+        <th class="text-center">Produits</th>
+        <th class="text-right">Total</th>
+        <th class="text-center">Type</th>
+    
+      </tr>
+    </thead>
+  </table>
+  <div class="table-body-scroll">
+    <table class="table table-cart table-mobile table-hover">
+      <tbody>
+<tr *ngFor="let commandecontact of getFilteredCommandes().slice().reverse(); let index = index">
+          <td class="text-center">#{{ index + 1 }}</td>
+          <td class="text-center">{{ commandecontact?.Commande_Id }}</td>
+          <td>
+            <span *ngIf="userconnectcontact.email.trim() === 's.sousse@olympiacompany.com' || 
+                        userconnectcontact.email.trim() === 's.bouhjar@olympiacompany.com' || 
+                        userconnectcontact.email.trim() === 's.msaken@olympiacompany.com'; else noClient">
+              {{ getGuestName(commandecontact?.GuestId) }}
+            </span>
+            <ng-template #noClient>-</ng-template>
+          </td>
+          <td>{{ commandecontact?.OrderDate | date: 'dd/MM/yyyy HH:mm' }}</td>
+<td class="text-center">
+  <div *ngIf="commandecontact?.Type === 1; else venteButton">
+    <div class="badge badge-warning" style="padding: 10px;border-radius: 0px;">
+      {{ commandecontact?.Status }}
+    </div>
+  </div>
+  <ng-template #venteButton>
+   <a href="#signin-modal"
+               class="text-primary"
+               (click)="getAllProductsCommande(commandecontact?.Commande_Id)"
+               data-toggle="modal">
+              Voir statut
+            </a>
+  </ng-template>
+</td>
+
+          <td class="text-center">
+            <a href="#sign-modal"
+               class="text-primary"
+               (click)="getAllProductsCommande(commandecontact?.Commande_Id)"
+               data-toggle="modal">
+              Voir produits
+            </a>
+          </td>
+          <td class="text-right">{{ commandecontact?.Total | number: '1.3-3' }} DT</td>
+          <td class="text-center">
+            <span class="badge"
+                  [ngClass]="{
+                    'badge-info': commandecontact?.Type === 1,
+                    'badge-primary': commandecontact?.Type === 2
+                  }">
+              {{ commandecontact?.Type === 1 ? 'Achat' : 'Vente' }}
+            </span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  <p *ngIf="commandescontact?.$values?.length == 0">Aucune commande n'a encore été passée.</p>
+  <a href="/home" class="btn btn-outline-primary-2">
+    <span>Allez à la boutique</span>
+    <i class="icon-long-arrow-right"></i>
+  </a>
+</div>
+
+            <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="card card-dashboard">
+                    <div class="card-body">
+                      <h3 class="card-title">Adresse de facturation</h3><!-- End .card-title -->
+                      <div *ngIf="role=='Client'">
+                        <p>{{userconnect?.nom?.trim()}}
+                          <br>
+                          {{userconnect?.pay?.trim()}}, {{userconnect?.rue?.trim()}}<br>
+                          {{userconnect?.tel?.trim()}}<br>
+                          <a class="__cf_email__"
+                            data-cfemail="a2dbcdd7d0cfc3cbcee2cfc3cbce8cc1cdcf">{{userconnect?.email?.trim()}}</a><br>
+                        </p>
+                      </div>
+                      <div *ngIf="role=='Commercial'">
+
+                        <p>{{userconnectcomm?.nom?.trim()}}
+                          <br>
+                          {{userconnectcomm?.pay?.trim()}}, {{userconnectcomm?.rue?.trim()}}<br>
+                          {{userconnectcomm?.tel?.trim()}}<br>
+                          <a class="__cf_email__"
+                            data-cfemail="a2dbcdd7d0cfc3cbcee2cfc3cbce8cc1cdcf">{{userconnectcomm?.email?.trim()}}</a><br>
+                        </p>
+                      </div>
+                    </div><!-- End .card-body -->
+                  </div><!-- End .card-dashboard -->
+                </div><!-- End .col-lg-6 -->
+
+                <div class="col-lg-6">
+                  <div class="card card-dashboard">
+                    <div class="card-body">
+                      <h3 class="card-title">Adresse de livraison </h3><!-- End .card-title -->
+
+                      <p>Vous n'avez pas encore configuré ce type d'adresse.<br>
+                      </p>
+                    </div><!-- End .card-body -->
+                  </div><!-- End .card-dashboard -->
+                </div><!-- End .col-lg-6 -->
+              </div><!-- End .row -->
+            </div><!-- .End .tab-pane -->
+
+          </div>
+        </div><!-- End .col-lg-9 -->
+      </div><!-- End .row -->
+    </div><!-- End .container -->
+  </div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close" style="outline: none;">
+          <span aria-hidden="true" style="font-size: 1.75rem; font-weight: 300;">&times;</span>
+        </button>
+
+<div class="form-box">
+  <div class="form-tab">
+    <table class="table table-cart table-mobile">
+      <thead>
+        <tr>
+          <th style="width: 100%;">Produit</th>
+          <th style="width: 100%;">Sref1</th>
+          <th style="width: 100%;">Sref2</th>
+                    <th style="width: 100%;">Status</th>
+
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td class="product-col" style="width: 100%;">
+            <div class="product" style="width: 100%;">
+              <h3 class="product-title" style="width: 100%;">
+                <a [routerLink]="['home/product', product?.artId]">{{ product?.des }}</a>
+              </h3>
+            </div>
+          </td>
+
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.sref1 }}
+          </td>
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.sref2 }}
+          </td>
+
+
+          <!-- Affichage du badge en fonction de 'fidelity' -->
+          <td class="text-center">
+            <span class="badge" [ngClass]="{
+              'badge-danger': product?.fidelity === 0,
+              'badge-success': product?.fidelity !== 0
+            }">
+              {{ product?.fidelity === 0 ? 'Stock non disponible' : 'Vendu' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary btn-lg btn-block" (click)="downloadHTML()">
+    <i class="icon-download mr-2"></i> Télécharger le PDF
+  </button>
+</div>
+
+      </div><!-- End .modal-body -->
+    </div><!-- End .modal-content -->
+  </div><!-- End .modal-dialog -->
+</div><!-- End .modal -->
+<div class="modal fade" id="sign-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close" style="outline: none;">
+          <span aria-hidden="true" style="font-size: 1.75rem; font-weight: 300;">&times;</span>
+        </button>
+
+<div class="form-box">
+  <div class="form-tab">
+    <table class="table table-cart table-mobile">
+      <thead>
+        <tr>
+          <th style="width: 100%;">Produit</th>
+          <th style="width: 100%;">Quantité</th>
+          <th style="width: 100%;">Sref1</th>
+          <th style="width: 100%;">Sref2</th>
+          <th style="width: 100%;">Stock</th>
+          <th style="width: 100%;">Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td class="product-col" style="width: 100%;">
+            <div class="product" style="width: 100%;">
+              <h3 class="product-title" style="width: 100%;">
+                <a [routerLink]="['home/product', product?.artId]">{{ product?.des }}</a>
+              </h3>
+            </div>
+          </td>
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.quantite }}
+          </td>
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.sref1 }}
+          </td>
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.sref2 }}
+          </td>
+          <td class="quantity-col" style="width: 100%;">
+            {{ product?.stock }}
+          </td>
+          <td class="total-col" style="width: 100%;">
+            {{ product?.prix | number: '1.3-3' }} DT
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary btn-lg btn-block" (click)="downloadHTML()">
+    <i class="icon-download mr-2"></i> Télécharger le PDF
+  </button>
+</div>
+
+      </div><!-- End .modal-body -->
+    </div><!-- End .modal-content -->
+  </div><!-- End .modal-dialog -->
+</div><!-- End .modal -->

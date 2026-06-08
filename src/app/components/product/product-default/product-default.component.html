@@ -1,0 +1,187 @@
+<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+  <div class="container d-flex align-items-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Boutique</a></li>
+      <li class="breadcrumb-item"><a href="#">Produit</a></li>
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+
+
+  </div>
+</nav>
+
+<div class="page-content">
+  <div class="container">
+    <div class="product-details-top">
+      <div class="row">
+        <!--<div class="col-md-6">
+          <div class="product-gallery product-gallery-vertical">
+            <div class="row">
+              <figure class="product-main-image">
+                <img id="product-zoom" style="max-height: 350px;"
+                  src="https://localhost:7166/api/Art/image?artPhotoId={{product?.artId}}"
+                  data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+
+                <a id="btn-product-gallery" class="btn-product-gallery">
+                  <i class="icon-arrows"></i>
+                </a>
+              </figure>
+
+
+            </div>
+          </div>
+        </div>End .col-md-6 -->
+
+        <div class="col-md-6">
+          <div class="product-details">
+            <h1 class="product-title">{{product?.des}}</h1><!-- End .product-title -->
+
+            <!--<div class="ratings-container">
+              <div class="ratings">
+                <div class="ratings-val" style="width: 100%;"></div>
+              </div>
+              <a class="ratings-text" id="review-link"></a>
+            </div> End .rating-container -->
+
+            <!-- <div class="product-price">{{product?.atfprix | number: '1.2-2' }} </div>End .product-price -->
+
+            <!--<div class="product-content">
+              <br>
+              <p #bottomElement>Veuillez selectionner les sous références pour cet article ci-dessous :</p>
+            </div>
+            <button class="btn btn-primary" (click)="scrollToBottom()">Choisir <i class="icon-arrow-down"></i></button>-->
+
+
+
+          </div><!-- End .col-md-6 -->
+        </div><!-- End .row -->
+      </div><!-- End .product-details-top -->
+      <div></div>
+      <div class="product-details-tab">
+        <ul class="nav nav-pills justify-content-center" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab"
+              aria-controls="product-desc-tab" aria-selected="true">Tarifs</a>
+          </li>
+
+        </ul>
+
+
+        <!--Get Tarifs-->
+        <div>
+          <label for="sref1">Recherche par Sous Référence 1 :</label>
+
+          <input type="text" class="form-control" [(ngModel)]="searchText">
+
+          <div class="select-custom">
+            <select id="sref1" class="form-control" [(ngModel)]="selectedSref1">
+              <option value="" selected>Tous Les Sous Référence</option>
+
+              <option *ngFor="let x of sref1 | product:searchText" [value]="x.sref1">{{ x.lib }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- <div>
+          <label for="sref2">SREF2:</label>
+          <div class="select-custom">
+
+            <select id="sref2" class="form-control" [(ngModel)]="selectedSref2">
+              <option value="" [selected]="true">Pas de Sref2</option>
+              <option *ngFor="let x of sref2" [value]="x.sref2">{{ x.lib }}</option>
+            </select>
+          </div>
+        </div> -->
+        <div style="margin:20px;text-align:center">
+          <button class="btn btn-primary" (click)="getTarifBySref1Sref2Ref()">Parcourir les combinaisons <i
+              class="icon-search"></i>
+          </button>
+
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+            aria-labelledby="product-desc-link">
+            <div class="product-desc-content">
+              <div class="row" style="justify-content: center;">
+
+                <div class="col-lg-6" style="text-align: center;">
+                  <label for="">Recherche par Sous Référence 2 :</label>
+                  <input type="text" class="form-control" [(ngModel)]="searchText2">
+
+                </div>
+
+              </div>
+              <table class="table table-cart table-mobile table-hover">
+                <thead class="bg-light">
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Référence</th>
+                    <th class="text-center">Sref 1</th>
+                    <th class="text-center">Sref 2</th>
+                    <th class="text-center">Code Tarif</th>
+
+                    <th class="text-right">Prix HT</th>
+                    <th class="text-right">Prix TTC</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+              
+                <tbody>
+                  <tr *ngFor="let tar of tarifs?.reverse()?.slice() | product:searchText | sref:searchText2; let index = index">
+                    <td class="text-center">{{ index + 1 }}</td>
+                    <td class="font-weight-bold">{{ tar?.ref || '-' }}</td>
+                    <td>{{ tar?.sref1 || '-' }}</td>
+                    <td>{{ tar?.sref2 || '-' }}</td>
+                    <td class="text-center">{{ tar?.tacod }}</td>
+
+                    <td class="text-right">{{ (tar?.pub) | number:'1.3-3' }} {{ tar?.devise || 'TND' }}</td>
+                    <td class="text-right">{{ (tar?.pub * 1.19) | number:'1.3-3' }} {{ tar?.devise || 'TND' }}</td>
+                    <td class="text-center">
+                      <button (click)="addToCart(product, tar?.pub, tar?.sref1, tar?.sref2); openSnackBarCart()" 
+                              class="btn btn-sm btn-primary"  *ngIf="!isCommercialContact()">
+                        <i  class="icon-shopping-cart mr-1"></i> Commander
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p></p>
+              <ul>
+
+              </ul>
+
+              <p></p>
+            </div><!-- End .product-desc-content -->
+          </div><!-- .End .tab-pane -->
+          <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+            <div class="product-desc-content">
+              <h3>Information</h3>
+              <p></p>
+
+              <h3></h3>
+              <ul>
+
+              </ul>
+
+              <h3>Size</h3>
+              <p>one size</p>
+            </div><!-- End .product-desc-content -->
+          </div><!-- .End .tab-pane -->
+          <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+            <div class="product-desc-content">
+              <h3>Livraison</h3>
+              <p></p>
+            </div><!-- End .product-desc-content -->
+          </div><!-- .End .tab-pane -->
+          <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+            <div class="reviews">
+              <!-- End .review -->
+
+              <!-- End .review -->
+            </div><!-- End .reviews -->
+          </div><!-- .End .tab-pane -->
+        </div><!-- End .tab-content -->
+      </div><!-- End .product-details-tab -->
+    </div><!-- End .container -->
+  </div><!-- End .page-content -->

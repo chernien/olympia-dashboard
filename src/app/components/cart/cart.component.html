@@ -1,0 +1,144 @@
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="container">
+    <h1 class="page-title">Panier Des Produits<span>Shop</span></h1>
+  </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Acceuil</a></li>
+      <li class="breadcrumb-item"><a routerLink="/shop-list">Boutique</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Panier Des Produits :</li>
+    </ol>
+  </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+  <div class="cart">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="table-responsive">
+            <table class="table table-cart table-mobile">
+              <thead class="thead-light">
+                <tr>
+                  <th>#</th>
+                  <th>Référence</th>
+                  <th>Désignation</th>
+                  <th>Sref1</th>
+                  <th>Sref2</th>
+                  <th class="text-right">Prix HT</th>
+                  <th class="text-right">Prix TTC</th>
+                  <th class="text-center">Quantité</th>
+                  <th class="text-center">Échantillon</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tar of reversedCartItems; let index = index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ tar?.ref }}</td>
+                  <td>{{ tar?.des }}</td>
+                  <td>{{ tar?.sref1 }}</td>
+                  <td>{{ tar?.sref2 }}</td>
+                  <td class="text-right">{{ tar?.prix / 1.19 | number: '1.3-3' }} {{ tar?.devise }}</td>
+                  <td class="text-right">{{ tar?.prix | number: '1.3-3' }}</td>
+                  <td class="text-center">
+                    <div class="product-details-quantity">
+                      <input 
+                        type="number" 
+                        class="form-control text-center" 
+                        [(ngModel)]="tar.quantite"
+                        (change)="updateQuantity(tar)"
+                        (keyup)="updateQuantity(tar)"
+                        min="1" 
+                        max="50000" 
+                        step="1" 
+                        required
+                        style="width: 90px; margin: 0 auto;">
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="tar.eche"
+                      [ngModelOptions]="{standalone: true}"
+                      style="transform: scale(1.5);">
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-danger" (click)="removeFromCart(tar); openSnackBarRemoveCart()">
+                      <i class="icon-close"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cart-bottom mt-3">
+            <button (click)="clearCart()" class="btn btn-outline-dark-2">
+              <span>Actualiser le Panier</span>
+              <i class="icon-refresh ml-2"></i>
+            </button>
+          </div>
+
+
+
+<!-- <div class="form-group">
+  <label>Adresse de Facturation</label>
+  <input type="text" [(ngModel)]="adresseFacturation" class="form-control" placeholder="Adresse de facturation">
+</div> -->
+<div class="form-group">
+  <label>Adresse de Livraison</label>
+  <input type="text" [(ngModel)]="adresseLivraison" class="form-control" placeholder="Adresse de livraison">
+</div>
+
+          <button 
+  *ngIf="connectedRole=='Contact'" 
+  type="button"
+  [disabled]="isSubmitting"
+  (click)="passerCommandeContact()"
+  class="btn btn-outline-primary-2 btn-order btn-block mt-3"
+  style="touch-action: manipulation;">
+  
+  <span class="btn-text" *ngIf="!isSubmitting">Passer la commande</span>
+  <span class="btn-hover-text" *ngIf="!isSubmitting">Checkout</span>
+  
+  <!-- Spinner visible pendant l'envoi -->
+  <span *ngIf="isSubmitting">
+    <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+    Envoi en cours...
+  </span>
+</button>
+        </div>
+        
+        <aside class="col-lg-3">
+          <div class="summary summary-cart">
+            <h3 class="summary-title">Total</h3>
+            <table class="table table-summary">
+              <tbody>
+                <tr class="summary-subtotal">
+                  <td>Prix total HT:</td>
+                  <td class="text-right">{{(cartTotal - (cartTotal*0.19 ))| number: '1.3-3'}} DT</td>
+                </tr>
+                <tr class="summary-subtotal">
+                  <td>Prix total TTC:</td>
+                  <td class="text-right">{{(cartTotal)| number: '1.3-3'}} DT</td>
+                </tr>
+                <tr class="summary-total">
+                  <td>Total:</td>
+                  <td class="text-right">{{cartTotal| number: '1.3-3'}} DT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <a href="https://storeolympia.com" class="btn btn-outline-dark-2 btn-block mb-3">
+            <span>CONTINUER VOS ACHATS</span>
+            <i class="icon-shopping-cart ml-2"></i>
+          </a>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

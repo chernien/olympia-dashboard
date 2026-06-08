@@ -1,0 +1,166 @@
+<header class="header">
+  <div class="header-top">
+    <div class="container">
+
+      <div class="header-left">
+        <div class="header-dropdown">
+          <a><i class="icon-phone"></i> Tel : (+216) 73 259 357 </a>
+          <!-- End .header-menu -->
+        </div><!-- End .header-dropdown -->
+
+        <!-- End .header-dropdown -->
+      </div>
+      <div class="header-right">
+        <ul class="top-menu">
+          <li>
+            <a>Mon compte</a>
+            <ul>
+              <li><a routerLink="/home/wishlist"><i class="icon-heart-o"></i>Ma Liste Des Envies
+                  <span>({{wishlistItems.length}})</span></a></li>
+              <li *ngIf="!loggedIn"><a href="/login"><i class="icon-user"></i>Se
+                  Connecter</a>
+              </li>
+              <li *ngIf="loggedIn">
+                <div class="header-dropdown">
+                  <a *ngIf="userconnect" routerLink="/home/account" ><i class="icon-signout"></i> {{userconnect?.nom.trim()}}</a>
+                  <a *ngIf="userconnectcontact" routerLink="/home/account" ><i class="icon-signout"></i> {{userconnectcontact?.nom.trim()}}</a>
+
+                  <a *ngIf="userconnectcomm" routerLink="/home/account" ><i class="icon-signout"></i> {{userconnectcomm?.nom.trim()}}</a>
+
+                  <div class="header-menu">
+                    <ul>
+                      <li><a (click)="logout()">Se déconnecter</a></li>
+                    </ul>
+                  </div><!-- End .header-menu -->
+                </div>
+              </li>
+
+              <!-- <li ><a data-toggle="modal"><i class="icon-user"></i>{{userconnect?.firstName}}
+                  {{userconnect?.lastName}}</a>
+              </li> -->
+            </ul>
+          </li>
+        </ul><!-- End .top-menu -->
+      </div><!-- End .header-right -->
+    </div><!-- End .container -->
+  </div><!-- End .header-top -->
+
+  <div class="header-middle sticky-header">
+    <div class="container">
+      <div class="header-left">
+        <button class="mobile-menu-toggler">
+          <span class="sr-only"></span>
+          <i class="icon-bars"></i>
+        </button>
+
+        <a href="https://storeolympia.com/home" class="logo">
+          <img [src]="logoUrl" alt="Lang Logo" width="105" height="25">
+        </a>
+
+        <nav class="main-nav">
+          <ul class="menu sf-arrows">
+            <li class="megamenu-container active">
+              <a href="/home" class="sf">Boutique</a>
+
+            </li>
+
+            <li *ngIf="loggedIn && !isCommercialContact()">
+  <a routerLink="/home/account" class="sf">Compte</a>
+</li>
+            <li *ngIf="loggedIn">
+              <a routerLink="/home/guest" class="sf">Clients</a>
+            </li>
+            <li *ngIf="isAdmin">
+              <a routerLink="/home/administration" class="sf">Administration</a>
+            </li>
+            <!--<li>
+              <a routerLink="/home/about-us" class="sf">À Propos Olympia</a>
+
+            </li>
+            <li>
+              <a class="sf" routerLink="/home/contact-us">Contacter Nous</a>
+
+            </li>-->
+
+
+
+          </ul><!-- End .menu -->
+        </nav><!-- End .main-nav -->
+      </div><!-- End .header-left -->
+
+      <div class="header-right">
+        <div class="header-search">
+          <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+          <form action="#" method="get">
+            <div class="header-search-wrapper">
+              <label for="q" class="sr-only">Recherche</label>
+              <input type="search" class="form-control" name="q" id="q" placeholder="Rechercher" required>
+            </div><!-- End .header-search-wrapper -->
+          </form>
+        </div><!-- End .header-search -->
+
+        <div class="dropdown cart-dropdown">
+          <a class="dropdown-toggle cart-icon-wrapper" (click)="getTotal()" role="button" data-toggle="dropdown" 
+             aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="icon-shopping-cart"></i>
+            <span class="cart-count badge" [class.badge-pulse]="cartItems.length > 0">
+              {{cartItems.length}}
+            </span>
+          </a>
+        
+          <div class="dropdown-menu dropdown-menu-right cart-dropdown-menu">
+            <div class="dropdown-header">
+              <h4>Votre Panier</h4>
+              <small>{{cartItems.length}} article(s)</small>
+            </div>
+            
+            <div *ngIf="cartItems.length === 0" class="empty-cart-message">
+              <i class="icon-cart-remove"></i>
+              <p>Votre panier est vide</p>
+            </div>
+            
+            <div class="dropdown-cart-products" *ngIf="cartItems.length > 0" style="max-height: 300px; overflow-y: auto;">
+              <div class="product" *ngFor="let product of cartItems">
+
+                
+                <div class="product-cart-details">
+                  <h4 class="product-title">
+                    <a [routerLink]="'/product/' + product.id">{{product?.des | slice:0:30}}{{product?.des?.length > 30 ? '...' : ''}}</a>
+                  </h4>
+        
+                  <span class="cart-product-info">
+                    <span class="cart-product-qty">{{product?.quantite}}</span>
+                    × {{ product?.prix | number: '1.3-3' }} {{product?.devise}}
+                  </span>
+                  
+                  <div class="product-subtotal">
+                    {{ (product.quantite * product.prix) | number: '1.3-3' }} {{product?.devise}}
+                  </div>
+                </div>
+        
+                <a (click)="removeFromCart(product); openSnackBarRemoveCart()" class="btn-remove" 
+                   title="Supprimer">
+                  <i class="icon-close"></i>
+                </a>
+              </div>
+            </div>
+        
+            <div class="dropdown-cart-footer" *ngIf="cartItems.length > 0">
+              <div class="dropdown-cart-total">
+                <span>Total TTC</span>
+                <span class="cart-total-price">{{cartTotal | number: '1.3-3'}} DT</span>
+              </div>
+        
+              <div class="dropdown-cart-action">
+                <a routerLink="/home/cart" class="btn btn-primary btn-block btn-view-cart">
+                  Voir Panier <i class="icon-arrow-right"></i>
+                </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- End .header-right -->
+    </div><!-- End .container -->
+  </div><!-- End .header-middle -->
+</header><!-- End .header -->

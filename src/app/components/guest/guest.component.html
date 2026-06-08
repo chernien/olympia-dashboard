@@ -1,0 +1,92 @@
+<div class="guest-container">
+  <h2 class="title">👥 Liste des Clients :</h2>
+
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" 
+           (input)="filterGuests()" 
+           placeholder="Rechercher par nom, prénom ou CIN..." 
+           class="search-input">
+  </div>
+
+  <div class="stats">
+    Total: {{filteredGuests.length}} clients | Affichage: {{currentPage * itemsPerPage}}/{{filteredGuests.length}}
+  </div>
+
+  <div class="guest-list">
+    <div class="guest-card" *ngFor="let guest of paginatedGuests">
+      <div class="guest-info">
+        <span class="guest-name">{{ guest.prenom }} {{ guest.nom }}</span>
+        <span class="guest-details">
+          <span>CIN: {{ guest.cin }}</span>
+          <span>Numéro de carte de fidélité: {{ guest.num }}</span>
+          <span>Tél: {{ guest.tel }}</span>
+          <span>Code Divalto : {{guest.diva}}</span>
+          <span>Points de Fidélité : {{guest.fidelite}}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">Précédent</button>
+    <span>Page {{currentPage + 1}}/{{totalPages}}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">Suivant</button>
+    <select [(ngModel)]="itemsPerPage" (change)="updatePagination()">
+      <option value="10">10 par page</option>
+      <option value="25">25 par page</option>
+      <option value="50">50 par page</option>
+      <option value="100">100 par page</option>
+    </select>
+  </div>
+
+  <!--<h2 class="title">➕ Ajouter un Client</h2>-->
+
+  <div class="selection-mode">
+    <button (click)="toggleGuestSelection('new')">Ajouter un nouveau client</button>
+    <button (click)="toggleGuestSelection('existing')">Ajouter un client existant</button>
+  </div>
+
+      <form (ngSubmit)="createGuest()" class="guest-form">
+      <div class="form-group">
+        <label for="num">Numéro de carte de fidélité (si existant) :</label>
+        <input *ngIf="guestSelectionMode === 'existing'" id="num" [(ngModel)]="newGuest.num" name="num" (blur)="loadExistingGuest()" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cin">CIN:</label>
+        <input id="cin" [(ngModel)]="newGuest.cin" name="cin" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="nom">Nom:</label>
+        <input id="nom" [(ngModel)]="newGuest.nom" name="nom" required>
+      </div>
+
+      <div class="form-group">
+        <label for="prenom">Prénom:</label>
+        <input id="prenom" [(ngModel)]="newGuest.prenom" name="prenom" required>
+      </div>
+
+      <div class="form-group">
+        <label for="diva">Code Divalto:</label>
+        <input id="diva" [(ngModel)]="newGuest.diva" name="diva" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tel">Téléphone:</label>
+        <input id="tel" type="tel" [(ngModel)]="newGuest.tel" name="tel" required>
+      </div>
+
+      <div class="form-group">
+        <label for="adresse">Adresse:</label>
+        <input id="adresse" [(ngModel)]="newGuest.adresse" name="adresse" required>
+      </div>
+
+      <!--<div class="form-group">
+        <label for="fidelite">Fidélité:</label>
+        <input id="fidelite" type="number" [(ngModel)]="newGuest.fidelite" name="fidelite" required>
+      </div>-->
+
+      <button type="submit" class="submit-btn">Ajouter</button>
+    </form>
+  </div>

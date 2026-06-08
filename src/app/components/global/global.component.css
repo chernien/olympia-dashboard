@@ -1,0 +1,10 @@
+.products .col-12 {
+    width: 100%;
+    margin-bottom: 20px; /* Space between stacked products */
+  }
+  
+  .product {
+    display: block;
+    text-align: center;
+  }
+  
