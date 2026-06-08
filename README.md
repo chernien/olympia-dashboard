@@ -278,12 +278,6 @@ Ce storefront fait partie de la solution Olympia :
 
 ---
 
-## 👤 Auteur
-
-> _À compléter avec vos informations._
-
-**[Votre nom complet]**
-*Développeur Full-Stack (.NET / Angular)*
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/votre-compte)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/votre-profil)
